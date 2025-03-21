@@ -1,15 +1,38 @@
-# OpenMS tools image = base
-FROM ghcr.io/openms/openms-tools:3.1.0
+# Use Miniconda as a base image
+FROM continuumio/miniconda3:latest
 
-# Set wd inside container
-WORKDIR /work
+# Set working directory inside the container
+WORKDIR /nps_analysis
 
-# Install application dependencies
-COPY docker/requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt
+# Copy repository into the container
+COPY . /nps_analysis
 
-# Copy source code
-COPY scripts ./scripts
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    cmake \
+    libboost-all-dev \
+    libxerces-c-dev \
+    libz-dev \
+    libbz2-dev \
+    libhdf5-dev \
+    libpng-dev \
+    libsqlite3-dev \
+    && rm -rf /var/lib/apt/lists/*
 
-# Set default command to start shell session when container runs
-CMD ["bash"]
+# Install Conda environment from environment.yml (without pyOpenMS)
+RUN conda update -n base -c defaults conda && \
+    conda env create -f envs/nps_base.yml && \
+    conda clean --all -y
+
+# Set shell to activate Conda environment
+SHELL ["conda", "run", "-n", "nps_base", "/bin/bash", "-c"]
+
+# Install pyOpenMS using pip after Conda environment is set up
+RUN conda run -n nps_base pip install pyopenms==3.3.0
+
+# Set PATH to include Conda environment binaries
+ENV PATH="/opt/conda/envs/nps_base/bin:$PATH"
+
+# Default command to keep the container running and interactive
+CMD ["/bin/bash"]

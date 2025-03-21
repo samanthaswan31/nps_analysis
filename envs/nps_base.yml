@@ -1,0 +1,13 @@
+name: nps_base
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - python=3.9
+  - numpy=1.26.4
+  - pandas=2.2.3
+  - matplotlib=3.9.2
+  - scikit-learn=1.5.1
+  - pytest=7.4.0
+  - Cython=3.0.2
