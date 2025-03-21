@@ -11,3 +11,5 @@ dependencies:
   - scikit-learn=1.5.1
   - pytest=7.4.0
   - Cython=3.0.2
+  - eigen=3.4.0
+  - pyopenms=3.0.0

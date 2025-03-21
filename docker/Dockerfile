@@ -28,9 +28,6 @@ RUN conda update -n base -c defaults conda && \
 # Set shell to activate Conda environment
 SHELL ["conda", "run", "-n", "nps_base", "/bin/bash", "-c"]
 
-# Install pyOpenMS using pip after Conda environment is set up
-RUN conda run -n nps_base pip install pyopenms==3.3.0
-
 # Set PATH to include Conda environment binaries
 ENV PATH="/opt/conda/envs/nps_base/bin:$PATH"
 
