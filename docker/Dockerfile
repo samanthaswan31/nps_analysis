@@ -22,14 +22,14 @@ RUN apt-get update && apt-get install -y \
 
 # Install Conda environment from environment.yml (without pyOpenMS)
 RUN conda update -n base -c defaults conda && \
-    conda env create -f envs/nps_base.yml && \
+    conda env create -f envs/openms_base.yml && \
     conda clean --all -y
 
 # Set shell to activate Conda environment
-SHELL ["conda", "run", "-n", "nps_base", "/bin/bash", "-c"]
+SHELL ["conda", "run", "-n", "openms_base", "/bin/bash", "-c"]
 
 # Set PATH to include Conda environment binaries
-ENV PATH="/opt/conda/envs/nps_base/bin:$PATH"
+ENV PATH="/opt/conda/envs/openms_base/bin:$PATH"
 
 # Default command to keep the container running and interactive
 CMD ["/bin/bash"]
